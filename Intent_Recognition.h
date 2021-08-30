@@ -28,4 +28,5 @@ class Intent_Recognition
 	string GetIntentFromString(string userInput);
 	void LoadIntents();
 	string ProcessString(string stringInput);
+	string cleanupString(string input);
 };

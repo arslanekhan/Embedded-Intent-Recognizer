@@ -39,11 +39,13 @@ void Intent_Recognition::ExtractWordsFromString(string userInput)
 
 	for (const auto &str : words) 
 	{
+		string tempStr = cleanupString(str);
+               	string cleanWord = ProcessString(tempStr);
 		for (const auto &strCheck : m_whWordsOfInterest)
-		{	
-			if (MatchStrings(str, strCheck) == true)
+		{
+			if (MatchStrings(cleanWord, strCheck) == true)
 			{
-				m_whWord = ProcessString(str);
+				m_whWord = cleanWord;
 //				cout<<"Strings Matched with word: "<<m_whWord<<endl;
 				break;
 			}
@@ -51,9 +53,9 @@ void Intent_Recognition::ExtractWordsFromString(string userInput)
 
 		for (const auto &strCheck : m_fillingWordsOfInterest)
                 {
-                        if (MatchStrings(str, strCheck) == true)
+                        if (MatchStrings(cleanWord, strCheck) == true)
                         {
-                                m_fillingWords.push_back(ProcessString(str));
+                                m_fillingWords.push_back(cleanWord);
 //                                cout<<"Strings Matched with word: "<<str<<endl;
                                 break;
                         }
@@ -61,9 +63,9 @@ void Intent_Recognition::ExtractWordsFromString(string userInput)
 
 		for (const auto &strCheck : m_topicWordsOfInterest)
                 {
-                        if (MatchStrings(str, strCheck) == true)
+                        if (MatchStrings(cleanWord, strCheck) == true)
                         {
-                                m_topic=ProcessString(str);
+                                m_topic=cleanWord;
 //                                cout<<"Strings Matched with word: "<<m_topic<<endl;
                                 break;
                         }
@@ -71,9 +73,9 @@ void Intent_Recognition::ExtractWordsFromString(string userInput)
 
 		for (const auto &strCheck : m_citiesOfInterest)
                 {
-                        if (MatchStrings(str, strCheck) == true)
+                        if (MatchStrings(cleanWord, strCheck) == true)
                         {
-                                m_city=ProcessString(str);
+                                m_city=cleanWord;
 //                                cout<<"Strings Matched with word: "<<m_city<<endl;
                                 break;
                         }
@@ -135,4 +137,21 @@ string Intent_Recognition::ProcessString(string stringInput)
    		it = tolower(it);
 	}
 	return lowerCaseString;
+}
+
+// function to remove characters other than alphabets
+string Intent_Recognition::cleanupString(string input)
+{
+    int j = 0;
+    for (int i = 0; i < input.size(); i++) {
+         
+        // Store only valid characters
+        if ((input[i] >= 'A' && input[i] <= 'Z') ||
+            (input[i] >='a' && input[i] <= 'z'))
+        {
+            input[j] = input[i];
+            j++;
+        }
+    }
+    return input.substr(0, j);
 }
